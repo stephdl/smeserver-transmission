@@ -1,0 +1,28 @@
+#!/usr/bin/perl -w
+
+use esmith::Build::CreateLinks qw(:all);
+
+####################
+# links to add
+
+# templates to expand
+	templates2events( "/var/lib/transmission/settings.json" , qw( conf-transmission post-upgrade));
+	templates2events( "/etc/samba/smb.conf" , qw( conf-transmission post-upgrade));
+	templates2events("/etc/httpd/conf/httpd.conf", qw( conf-transmission post-upgrade));
+
+
+# services to launch on event
+	safe_symlink("restart", "root/etc/e-smith/events/conf-transmission/services2adjust/transmission-daemon");
+	safe_symlink("restart", "root/etc/e-smith/events/conf-transmission/services2adjust/httpd-e-smith");
+	safe_symlink("restart", "root/etc/e-smith/events/conf-transmission/services2adjust/smb");
+	safe_symlink("restart", "root/etc/e-smith/events/conf-transmission/services2adjust/iptables");
+
+# actions to perform
+	safe_symlink("../actions/transmission", "root/etc/e-smith/events/conf-transmission/20transmission");
+	safe_symlink("../actions/transmission", "root/etc/e-smith/events/bootstrap-console-save/20transmission");
+
+# links for rc.d from init.d
+	service_link_enhanced("transmission-daemon", "S85", "7");
+	service_link_enhanced("transmission-daemon", "K45", "6");
+	service_link_enhanced("transmission-daemon", "K45", "0");
+	service_link_enhanced("transmission-daemon", "K45", "1");

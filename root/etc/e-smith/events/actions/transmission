@@ -1,0 +1,4 @@
+#!/usr/bin/perl
+system('chown root:www /usr/lib/httpd/modules/unixgroup');
+system('chmod 750 /usr/lib/httpd/modules/unixgroup');
+system('chown -R transmission:transmission /var/lib/transmission/');

@@ -1,0 +1,48 @@
+{ my $status = $transmission{'status'} || "disabled";
+    return "    # transmission is disabled in this VirtualHost"
+           unless $status eq 'enabled';
+my @transmission_web_user = split(",", ($transmission{'Webuser'} || "") );
+my @transmission_web_group = split(",", ($transmission{'Webgroup'} || "") );
+	{
+	$OUT .= "###########################################################\n";
+	$OUT .= "#######    Transmission web download folder     ###########\n";
+	$OUT .= "###########################################################\n";
+		{
+
+
+			$OUT .= "Alias  /$transmission{'Webdlurl'}  $transmission{'Transdlfolder'}\n";
+    			$OUT .= "\n";
+      			$OUT .= "\<Directory $transmission{'Transdlfolder'}\/>\n";
+			$OUT .= "    Options Indexes\n";
+			$OUT .= "    order deny,allow\n";
+			$OUT .= "    deny from all\n";
+			$OUT .= "    SSLRequireSSL\n";
+
+		if ($transmission{'Webdlaccess'} eq 'local')
+			{       
+		      	$OUT .= "    allow from $localAccess\n";
+			} 
+
+		if ($transmission{'Webdlaccess'} eq 'global')
+			{
+		      	$OUT .= "    allow from all\n";
+			}
+
+                if (($transmission{'Webdlaccess'} ne 'global') && ($transmission{'Webdlaccess'} ne 'local'))
+			{
+		      	$OUT .= "    allow from none\n";
+			}
+
+			$OUT .= "    AuthName \"$transmission{'Name'}\"\n";   
+			$OUT .= "    AuthType Basic\n";
+			$OUT .= "    AuthExternal pwauth\n";
+			$OUT .= "    GroupExternal unixgroup\n";
+			$OUT .= "    AuthzUserAuthoritative off\n";
+			$OUT .= "    require user admin @transmission_web_user\n";
+			$OUT .= "    require group @transmission_web_group\n";
+      			$OUT .= "</Directory>\n";
+			$OUT .= "#########\n";
+		}
+	}
+}
+

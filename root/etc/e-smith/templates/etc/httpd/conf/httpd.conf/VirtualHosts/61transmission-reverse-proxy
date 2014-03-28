@@ -1,0 +1,82 @@
+{ my $status = $transmission{'status'} || "disabled";
+    return "    # transmission is disabled in this VirtualHost"
+           unless $status eq 'enabled';
+
+	{
+	$OUT .= "###########################################################\n";
+	$OUT .= "#######       Transmission reverse proxy         ##########\n";
+	$OUT .= "###########################################################\n";
+		{
+
+		if ($port ne "443")
+			{
+			$OUT .= "# Redirect transmission Address to Secure Address\n";
+			$OUT .= "    RewriteEngine On\n";
+			$OUT .= "    RewriteCond %{HTTPS} off\n";
+			$OUT .= "    RewriteRule \/$transmission{'Name'} https:\/\/%{HTTP_HOST}:443\/$transmission{'Name'}\n";
+			$OUT .= "## End Of Redirect\n";
+			}
+
+use Config;
+my $arch = $Config{selectminbits};
+my @transmission_user = split(",", ($transmission{'Transuser'} || "") );
+my @transmission_group = split(",", ($transmission{'Transgroup'} || "") );
+
+if ($arch eq "32"){
+    $OUT .= qq(
+##########
+    AddExternalGroup unixgroup /usr/lib/httpd/modules/unixgroup
+    SetExternalGroupMethod unixgroup environment
+
+    AddExternalAuth pwauth /usr/lib/httpd/modules/pwauth
+    SetExternalAuthMethod pwauth pipe
+#########
+);}
+            
+elsif ($arch eq "64"){
+    $OUT .= qq(
+##########
+    AddExternalGroup unixgroup /usr/lib/httpd/modules/unixgroup
+    SetExternalGroupMethod unixgroup environment
+
+    AddExternalAuth pwauth /usr/lib64/httpd/modules/pwauth
+    SetExternalAuthMethod pwauth pipe
+#########
+);}	
+
+			
+			$OUT .= "    ProxyPass \/$transmission{'Name'} http:\/\/127.0.0.1:9091\/$transmission{'Name'}\n";
+			$OUT .= "    ProxyPassReverse \/$transmission{'Name'} http:\/\/127.0.0.1:9091\/$transmission{'Name'}\n";
+			$OUT .= "#########\n";
+			$OUT .= "\<Location \/$transmission{'Name'}\>\n";
+			$OUT .= "    order deny,allow\n";
+			$OUT .= "    deny from all\n";
+			$OUT .= "    SSLRequireSSL\n";
+
+		if ($transmission{'PublicAccess'} eq 'local')
+			{       
+		      	$OUT .= "    allow from $localAccess\n";
+			} 
+
+		if ($transmission{'PublicAccess'} eq 'global')
+			{
+		      	$OUT .= "    allow from all\n";
+			}
+
+		if (($transmission{'PublicAccess'} ne 'global') && ($transmission{'PublicAccess'} ne 'local'))
+			{
+		      	$OUT .= "    allow from none\n";
+			}
+
+			$OUT .= "    AuthName \"$transmission{'Name'}\"\n";   
+			$OUT .= "    AuthType Basic\n";
+			$OUT .= "    AuthExternal pwauth\n";
+			$OUT .= "    GroupExternal unixgroup\n";
+			$OUT .= "    AuthzUserAuthoritative off\n";
+			$OUT .= "    require user admin @transmission_user\n";
+			$OUT .= "    require group @transmission_group\n";
+			$OUT .= "\<\/Location\>\n";
+			$OUT .= "#########\n";
+		}
+	}
+}

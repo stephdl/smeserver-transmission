@@ -1,0 +1,3 @@
+UID="transmission"
+GID="transmission"
+PERMS=0600

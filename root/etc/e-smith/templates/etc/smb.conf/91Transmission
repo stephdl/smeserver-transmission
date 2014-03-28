@@ -1,0 +1,28 @@
+{ my $status = $transmission{'status'} || "disabled";
+    return "    # transmission is disabled in smb.conf"
+           unless $status eq 'enabled';
+        {
+my @transmission_smb_users = split(",", ($transmission{'Smbusers'} || "") );
+
+	$OUT .= "\[$transmission{'Name'}\]\n";
+        $OUT .= "comment = Transmission download folder\n";
+        $OUT .= "path = $transmission{'Transdlfolder'}\n";
+
+        $OUT .= "valid users \= admin @transmission_smb_users\n";
+
+        $OUT .= "force user = transmission\n";
+        $OUT .= "force group = transmission\n";
+        $OUT .= "read only = no\n";
+        $OUT .= "browsable = yes\n";
+        $OUT .= "writable = yes\n";
+        $OUT .= "create mode = 0644\n";
+        $OUT .= "directory mask = 0755\n";
+
+        }
+}
+
+
+
+
+
+
