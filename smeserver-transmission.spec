@@ -15,7 +15,7 @@ BuildRequires: e-smith-devtools
 Requires: e-smith-release >= 8.0
 Requires: transmission >= 2.70
 AutoReqProv: no
-Patch0: smeserver-transmission-0.0.1_set_admin_user_and_64_version.patch
+#Patch0: smeserver-transmission-0.0.1_set_admin_user_and_64_version.patch
 %description
 transmission is an application adapted as a contrib for SMEserver, to help the  seeding of the SME Server CDROM ISO. 
 
@@ -36,7 +36,7 @@ transmission is an application adapted as a contrib for SMEserver, to help the  
 
 %prep
 %setup
-%patch0 -p1
+#%patch0 -p1
 %build
 perl createlinks
 
