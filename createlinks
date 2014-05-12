@@ -7,8 +7,8 @@ use esmith::Build::CreateLinks qw(:all);
 
 # templates to expand
 	templates2events( "/var/lib/transmission/settings.json" , qw( conf-transmission post-upgrade));
-	templates2events( "/etc/samba/smb.conf" , qw( conf-transmission post-upgrade));
-	templates2events("/etc/httpd/conf/httpd.conf", qw( conf-transmission post-upgrade));
+	templates2events( "/etc/samba/smb.conf" , qw( conf-transmission ));
+	templates2events("/etc/httpd/conf/httpd.conf", qw( conf-transmission ));
 
 
 # services to launch on event
