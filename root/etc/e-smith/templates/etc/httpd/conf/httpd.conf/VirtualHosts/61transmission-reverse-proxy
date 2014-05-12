@@ -69,6 +69,7 @@ elsif ($arch eq "64"){
 			}
 
 			$OUT .= "    AuthName \"$transmission{'Name'}\"\n";   
+            $OUT .= "    AuthBasicProvider external\n";
 			$OUT .= "    AuthType Basic\n";
 			$OUT .= "    AuthExternal pwauth\n";
 			$OUT .= "    GroupExternal unixgroup\n";
