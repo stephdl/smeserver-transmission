@@ -35,6 +35,7 @@ my @transmission_web_group = split(",", ($transmission{'Webgroup'} || "") );
 
 			$OUT .= "    AuthName \"$transmission{'Name'}\"\n";   
 			$OUT .= "    AuthType Basic\n";
+            $OUT .= "    AuthBasicProvider external\n";
 			$OUT .= "    AuthExternal pwauth\n";
 			$OUT .= "    GroupExternal unixgroup\n";
 			$OUT .= "    AuthzUserAuthoritative off\n";
