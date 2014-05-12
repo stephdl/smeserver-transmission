@@ -17,15 +17,15 @@
 			$OUT .= "## End Of Redirect\n";
 			}
 
-    $OUT .= qq(
-##########
-    AddExternalGroup unixgroup /usr/bin/unixgroup
-    SetExternalGroupMethod unixgroup environment
 
-    AddExternalAuth pwauth /usr/bin/pwauth
-    SetExternalAuthMethod pwauth pipe
-#########
-);}
+                        $OUT .= "    ##########\n";
+                        $OUT .= "        AddExternalGroup unixgroup /usr/bin/unixgroup\n";
+                        $OUT .= "        SetExternalGroupMethod unixgroup environment\n";
+                        $OUT .= "    \n";
+                        $OUT .= "        AddExternalAuth pwauth /usr/bin/pwauth\n";
+                        $OUT .= "        SetExternalAuthMethod pwauth pipe\n";
+                        $OUT .= "    #########\n";
+
             
 			$OUT .= "    ProxyPass \/$transmission{'Name'} http:\/\/127.0.0.1:9091\/$transmission{'Name'}\n";
 			$OUT .= "    ProxyPassReverse \/$transmission{'Name'} http:\/\/127.0.0.1:9091\/$transmission{'Name'}\n";
@@ -51,13 +51,13 @@
 			}
 
 			$OUT .= "    AuthName \"$transmission{'Name'}\"\n";   
-            $OUT .= "    AuthBasicProvider external\n";
+                        $OUT .= "    AuthBasicProvider external\n";
 			$OUT .= "    AuthType Basic\n";
 			$OUT .= "    AuthExternal pwauth\n";
 			$OUT .= "    GroupExternal unixgroup\n";
 			$OUT .= "    AuthzUserAuthoritative off\n";
-			$OUT .= "    require user admin @transmission_user\n";
-			$OUT .= "    require group @transmission_group\n";
+			$OUT .= "    require user admin ". @transmission_user . "\n";
+			$OUT .= "    require group  " . @transmission_group . "\n";
 			$OUT .= "\<\/Location\>\n";
 			$OUT .= "#########\n";
 		}
