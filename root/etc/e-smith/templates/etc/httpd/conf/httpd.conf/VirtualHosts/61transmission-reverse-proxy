@@ -39,7 +39,7 @@ elsif ($arch eq "64"){
     AddExternalGroup unixgroup /usr/lib/httpd/modules/unixgroup
     SetExternalGroupMethod unixgroup environment
 
-    AddExternalAuth pwauth /usr/lib64/httpd/modules/pwauth
+    AddExternalAuth pwauth /usr/bin/pwauth
     SetExternalAuthMethod pwauth pipe
 #########
 );}	
