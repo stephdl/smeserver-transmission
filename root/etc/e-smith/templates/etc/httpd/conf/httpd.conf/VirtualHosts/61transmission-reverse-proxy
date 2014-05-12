@@ -17,15 +17,9 @@
 			$OUT .= "## End Of Redirect\n";
 			}
 
-use Config;
-my $arch = $Config{selectminbits};
-my @transmission_user = split(",", ($transmission{'Transuser'} || "") );
-my @transmission_group = split(",", ($transmission{'Transgroup'} || "") );
-
-if ($arch eq "32"){
     $OUT .= qq(
 ##########
-    AddExternalGroup unixgroup /usr/lib/httpd/modules/unixgroup
+    AddExternalGroup unixgroup /usr/bin/unixgroup
     SetExternalGroupMethod unixgroup environment
 
     AddExternalAuth pwauth /usr/bin/pwauth
@@ -33,18 +27,6 @@ if ($arch eq "32"){
 #########
 );}
             
-elsif ($arch eq "64"){
-    $OUT .= qq(
-##########
-    AddExternalGroup unixgroup /usr/lib/httpd/modules/unixgroup
-    SetExternalGroupMethod unixgroup environment
-
-    AddExternalAuth pwauth /usr/bin/pwauth
-    SetExternalAuthMethod pwauth pipe
-#########
-);}	
-
-			
 			$OUT .= "    ProxyPass \/$transmission{'Name'} http:\/\/127.0.0.1:9091\/$transmission{'Name'}\n";
 			$OUT .= "    ProxyPassReverse \/$transmission{'Name'} http:\/\/127.0.0.1:9091\/$transmission{'Name'}\n";
 			$OUT .= "#########\n";
