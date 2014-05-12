@@ -28,7 +28,7 @@ if ($arch eq "32"){
     AddExternalGroup unixgroup /usr/lib/httpd/modules/unixgroup
     SetExternalGroupMethod unixgroup environment
 
-    AddExternalAuth pwauth /usr/lib/httpd/modules/pwauth
+    AddExternalAuth pwauth /usr/bin/pwauth
     SetExternalAuthMethod pwauth pipe
 #########
 );}
