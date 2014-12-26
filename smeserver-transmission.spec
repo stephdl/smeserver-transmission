@@ -22,6 +22,7 @@ transmission is an application adapted as a contrib for SMEserver, to help the  
 %changelog
 * Fri Dec 27 2014 Stephane de Labrusse  <stephdl@de-labrusse.fr> 0.0.3-1
 - corrected array issues in templated configuration files [SME: 8749]
+- corrected the path of unixgroup to /usr/bin/unixgroup
 
 * Mon May 12 2014 Stéphane de Labrusse  <stephdl@de-labrusse.fr> 0.0.2-1
 - removed the post-upgrade from template2expand
