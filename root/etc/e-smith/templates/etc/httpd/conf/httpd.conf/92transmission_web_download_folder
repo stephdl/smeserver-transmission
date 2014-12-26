@@ -35,12 +35,22 @@ my @transmission_web_group = split(",", ($transmission{'Webgroup'} || "") );
 
 			$OUT .= "    AuthName \"$transmission{'Name'}\"\n";   
 			$OUT .= "    AuthType Basic\n";
-            $OUT .= "    AuthBasicProvider external\n";
+                        $OUT .= "    AuthBasicProvider external\n";
 			$OUT .= "    AuthExternal pwauth\n";
 			$OUT .= "    GroupExternal unixgroup\n";
 			$OUT .= "    AuthzUserAuthoritative off\n";
-			$OUT .= "    require user admin @transmission_web_user\n";
-			$OUT .= "    require group @transmission_web_group\n";
+			$OUT .= "    require user admin ";
+                        foreach my $transmission_web_user (@transmission_web_user)
+                        {
+                           $OUT .= " $transmission_web_user";
+                        }
+                        $OUT .="\n";
+			$OUT .= "    require group ";
+                        foreach my $transmission_web_group (@transmission_web_group)
+                        {
+                           $OUT .= " $transmission_web_group";
+                        }
+                        $OUT .="\n";
       			$OUT .= "</Directory>\n";
 			$OUT .= "#########\n";
 		}
