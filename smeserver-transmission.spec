@@ -1,5 +1,5 @@
 %define name smeserver-transmission
-%define version 0.0.2
+%define version 0.0.3
 %define release 1
 Summary: transmission is a helpdesk system to download the SME Server iso
 Name: %{name}
@@ -20,6 +20,10 @@ AutoReqProv: no
 transmission is an application adapted as a contrib for SMEserver, to help the  seeding of the SME Server CDROM ISO. 
 
 %changelog
+* Fri Dec 27 2014 Stephane de Labrusse  <stephdl@de-labrusse.fr> 0.0.3-1
+- corrected array issues in templated configuration files [SME: 8749]
+- corrected the path of unixgroup to /usr/bin/unixgroup
+
 * Mon May 12 2014 Stéphane de Labrusse  <stephdl@de-labrusse.fr> 0.0.2-1
 - removed the post-upgrade from template2expand
 
