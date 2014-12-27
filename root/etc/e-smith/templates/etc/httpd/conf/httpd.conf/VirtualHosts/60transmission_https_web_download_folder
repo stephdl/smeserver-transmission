@@ -3,17 +3,16 @@
    return "    # transmission is disabled in this VirtualHost"
            unless $status eq 'enabled';
 
-	{
-	if ($port ne "443")
-		{
+        {
+        if ($port ne "443")
+                {
 
-			$OUT .= "## Redirect Web Address to Secure Address\n";
-			$OUT .= "RewriteEngine on\n";
-			$OUT .= "RewriteRule ^/$transmission{'Webdlurl'} https://%{HTTP_HOST}/$transmission{'Webdlurl'}\n";
-			$OUT .= "## End Of Redirect\n";
-		}
-	}
+                        $OUT .= "## Redirect Web Address to Secure Address\n";
+                        $OUT .= "RewriteEngine on\n";
+                        $OUT .= "RewriteRule ^/$transmission{'Webdlurl'} https://%{HTTP_HOST}/$transmission{'Webdlurl'}\n";
+                        $OUT .= "## End Of Redirect\n";
+                }
+        }
 
 }
-
 

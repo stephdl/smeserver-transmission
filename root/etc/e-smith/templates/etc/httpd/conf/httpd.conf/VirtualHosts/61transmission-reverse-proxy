@@ -2,6 +2,8 @@
     return "    # transmission is disabled in this VirtualHost"
            unless $status eq 'enabled';
 
+my @transmission_user = split(",", ($transmission{'Transuser'} || "") );
+my @transmission_group = split(",", ($transmission{'Transgroup'} || "") );
 	{
 	$OUT .= "###########################################################\n";
 	$OUT .= "#######       Transmission reverse proxy         ##########\n";
@@ -42,9 +44,8 @@ elsif ($arch eq "64"){
     AddExternalAuth pwauth /usr/lib64/httpd/modules/pwauth
     SetExternalAuthMethod pwauth pipe
 #########
-);}	
+);}
 
-			
 			$OUT .= "    ProxyPass \/$transmission{'Name'} http:\/\/127.0.0.1:9091\/$transmission{'Name'}\n";
 			$OUT .= "    ProxyPassReverse \/$transmission{'Name'} http:\/\/127.0.0.1:9091\/$transmission{'Name'}\n";
 			$OUT .= "#########\n";
@@ -73,10 +74,21 @@ elsif ($arch eq "64"){
 			$OUT .= "    AuthExternal pwauth\n";
 			$OUT .= "    GroupExternal unixgroup\n";
 			$OUT .= "    AuthzUserAuthoritative off\n";
-			$OUT .= "    require user admin @transmission_user\n";
-			$OUT .= "    require group @transmission_group\n";
+			$OUT .= "    require user admin ";
+                        foreach my $transmission_user (@transmission_user) 
+                        {
+                           $OUT .= " $transmission_user";
+                        }
+                        $OUT .="\n";
+			$OUT .= "    require group ";
+                        foreach my $transmission_group (@transmission_group)
+                        {
+                           $OUT .= " $transmission_group";
+                        }
+                        $OUT .="\n";
 			$OUT .= "\<\/Location\>\n";
 			$OUT .= "#########\n";
 		}
 	}
 }
+
