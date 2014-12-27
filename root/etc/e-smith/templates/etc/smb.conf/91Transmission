@@ -8,8 +8,12 @@ my @transmission_smb_users = split(",", ($transmission{'Smbusers'} || "") );
         $OUT .= "comment = Transmission download folder\n";
         $OUT .= "path = $transmission{'Transdlfolder'}\n";
 
-        $OUT .= "valid users \= admin @transmission_smb_users\n";
-
+        $OUT .= "valid users \= admin ";
+        foreach my $transmission_smb_users (@transmission_smb_users)
+        {
+            $OUT .= " $transmission_smb_users";
+        }
+        $OUT .="\n";
         $OUT .= "force user = transmission\n";
         $OUT .= "force group = transmission\n";
         $OUT .= "read only = no\n";
@@ -20,9 +24,3 @@ my @transmission_smb_users = split(",", ($transmission{'Smbusers'} || "") );
 
         }
 }
-
-
-
-
-
-

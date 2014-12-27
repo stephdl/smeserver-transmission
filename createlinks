@@ -6,19 +6,20 @@ use esmith::Build::CreateLinks qw(:all);
 # links to add
 
 # templates to expand
-	templates2events( "/var/lib/transmission/settings.json" , qw( conf-transmission post-upgrade));
-	templates2events( "/etc/samba/smb.conf" , qw( conf-transmission ));
-	templates2events("/etc/httpd/conf/httpd.conf", qw( conf-transmission ));
-
-
+ 	templates2events( "/var/lib/transmission/settings.json" , qw( transmission-update conf-transmission post-upgrade));
+	templates2events( "/etc/samba/smb.conf" , qw( transmission-update conf-transmission ));
+	templates2events("/etc/httpd/conf/httpd.conf", qw( transmission-update conf-transmission ));
 # services to launch on event
-	safe_symlink("restart", "root/etc/e-smith/events/conf-transmission/services2adjust/transmission-daemon");
-	safe_symlink("restart", "root/etc/e-smith/events/conf-transmission/services2adjust/httpd-e-smith");
-	safe_symlink("restart", "root/etc/e-smith/events/conf-transmission/services2adjust/smb");
-	safe_symlink("restart", "root/etc/e-smith/events/conf-transmission/services2adjust/iptables");
+ foreach my $event (qw(conf-transmission transmission-update)) 
+      {
+	safe_symlink("restart", "root/etc/e-smith/events/$event/services2adjust/transmission-daemon");
+	safe_symlink("restart", "root/etc/e-smith/events/$event/services2adjust/httpd-e-smith");
+	safe_symlink("restart", "root/etc/e-smith/events/$event/services2adjust/smb");
+	safe_symlink("restart", "root/etc/e-smith/events/$event/services2adjust/iptables");
 
 # actions to perform
-	safe_symlink("../actions/transmission", "root/etc/e-smith/events/conf-transmission/20transmission");
+ 	safe_symlink("../actions/transmission", "root/etc/e-smith/events/$event/20transmission");
+      }
 	safe_symlink("../actions/transmission", "root/etc/e-smith/events/bootstrap-console-save/20transmission");
 
 # links for rc.d from init.d
